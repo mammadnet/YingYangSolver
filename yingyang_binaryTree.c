@@ -218,7 +218,6 @@ void showList(Node* head) {
 
     while (p != NULL) {
         if (Continuity(p->board, p->status, p->whites, p->blacks)) {
-            // printf("status is: %d board is: %d, black: %d, white:%d\n", p->status, p->board, p->blacks, p->whites);
 
             count++;
         }
@@ -236,9 +235,6 @@ void showBoard(Node* head, unsigned short num) {
 
     while (p != NULL) {
 
-        // if (num != 0 && count++ == num) {
-        //     return;
-        // }
         if (Continuity(p->board, 16, p->whites, p->blacks)) {
             count++;
             printf(YEL "-------------------------\n" RESET);

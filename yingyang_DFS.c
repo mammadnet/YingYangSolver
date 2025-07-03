@@ -58,22 +58,16 @@ bool check2x2(unsigned short board, unsigned short status)
 
         for (char j = 0; j < ROWS - 1; j++)
         {
-            // printf("i %d, j %d\n", i, j);
             if (!(isEmpty(i, j, status) || isEmpty(i + 1, j, status) || isEmpty(i, j + 1, status) || isEmpty(i + 1, j + 1, status)))
             {
 
                 char res = coord(board, i, j) + coord(board, i + 1, j) + coord(board, i, j + 1) + coord(board, i + 1, j + 1);
                 if (res == 4 || res == 0)
                 {
-                    // printf("false -> i %d, j %d, %d\n", i, j, res);
-
-                    // if(board == 1)
-                    //     printf("-in check2x2->%d, %d\n", board, status);
                     return false;
                 }
             }
         }
-        // printf("COLS-> %d, endj-> %d", endI, endJ);
     }
     return true;
 }
@@ -88,7 +82,6 @@ unsigned short changeBit(unsigned short number, short i, short j, short bit)
 bool validCoord(short i, short j)
 {
     short index = i * COLS + j;
-    // printf("in validCoord i %d, j %d\n", i, j);
     return (i < 4 && j < 4 && i >= 0 && j >= 0);
 }
 
@@ -125,45 +118,34 @@ short countContinuCell(unsigned short board, short i, short j, short status, uns
         count = 1;
     }
 
-    // printf("color %d, i-> %d, j-> %d\n", color, i, j);
 
     short adjI = i - 1;
     short adjJ = j;
-    // printf("top\n");
     if (validForNext(board, color, adjI, adjJ, status, visited))
     {
         count += countContinuCell(board, adjI, adjJ, status, visited);
-        // printf("topCLOSE\n");
     }
 
     adjI = i + 1;
     adjJ = j;
-    // printf("down\n");
     if (validForNext(board, color, adjI, adjJ, status, visited))
     {
-
         count += countContinuCell(board, adjI, adjJ, status, visited);
-        // printf("downCLOSE\n");
     }
 
     adjI = i;
     adjJ = j - 1;
-    // printf("left\n");
     if (validForNext(board, color, adjI, adjJ, status, visited))
     {
-
         count += countContinuCell(board, adjI, adjJ, status, visited);
-        // printf("leftCLOSE\n");
     }
 
     adjI = i;
     adjJ = j + 1;
-    // printf("right\n");
     if (validForNext(board, color, adjI, adjJ, status, visited))
     {
 
         count += countContinuCell(board, adjI, adjJ, status, visited);
-        // printf("rightCLOSE\n");
     }
 
     return count;
@@ -196,7 +178,6 @@ bool Continuity(unsigned short board, unsigned short status, short whites, short
     }
 
     short numberOfCell = countContinuCell(board, i, j, status, 0);
-    // printf("1-->board %d, color %d, numberof %d, white %d, blacks %d, i %d, j %d\n", board, color, numberOfCell, whites, blacks, i, j);
 
     if (!checkCountedCell(color, numberOfCell, whites, blacks))
         return false;
@@ -219,12 +200,6 @@ bool Continuity(unsigned short board, unsigned short status, short whites, short
 
     numberOfCell = countContinuCell(board, i, j, status, 0);
 
-    // printf("2-->board %d, color %d, numberof %d, white %d, blacks %d, i %d, j %d\n", board, color, numberOfCell, whites, blacks, i, j);
-
-    //     printf("-in check2x2->%d, %d\n", board, status);
-
-    // printf("color %d, numberof %d, white %d, blacks %d, i %d, j %d\n", color, numberOfCell, whites, blacks, i, j);
-
     if (!checkCountedCell(color, numberOfCell, whites, blacks))
         return false;
 
@@ -243,9 +218,6 @@ void generate(Node **head, unsigned short board, unsigned short status, unsigned
         printf("\n");
 
         showBoard(board);
-
-        // printf("%d, -------%d\n", ++count, temp);
-
         return;
     }
 
@@ -255,10 +227,8 @@ void generate(Node **head, unsigned short board, unsigned short status, unsigned
     {
         for (short y = 0; y < COLS; y++)
         {
-
             if (coord(status, x, y) == 0)
             {
-
                 newStatus = changeBit(status, x, y, 1);
 
                 whiteCell = board;
@@ -269,7 +239,6 @@ void generate(Node **head, unsigned short board, unsigned short status, unsigned
                 blackCell = changeBit(board, x, y, 1);
                 if (check2x2(blackCell, newStatus) && Continuity(blackCell, newStatus, whites, blacks + 1))
                 {
-                    // printf("--------------------------------------%d\n", ++count);
                     generate(head, blackCell, newStatus, blacks + 1, whites);
                 }
             }
@@ -322,16 +291,10 @@ void showBoards(Node *head, unsigned short num)
     while (p != NULL)
     {
 
-        // if (num != 0 && count++ == num) {
-        //     return;
-        // }
-        // if (Continuity(p->board, 16, p->whites, p->blacks)) {
         printf("-------------------------\n");
 
         printf("status is: %d board is: %d, black: %d, white:%d\n", p->status, p->board, p->blacks, p->whites);
         showBoard(p->board);
-        // }
-
         p = p->next;
     }
 }
@@ -340,15 +303,5 @@ int main()
 {
     Node *head = NULL;
     generate(&head, 0, 0, 0, 0);
-    // insert(&head, 1, 1);
-    // insert(&head, 2, 2);
-    // insert(&head, 3, 3);
-    // showList(head);
-    // printf("%d",check2x2(8143, 63996));
-    // printf("%d, %d", isEmpty(1, 0, 63996), coord(63996, 1,0));
 
-    // printf("%d\n", countContinuCell(1, 0, 0, 0, 0));
-    // printf("%d\n", Continuity(0, 22307, 8, 0));
-
-    // showBoards(head, 0);
 }
